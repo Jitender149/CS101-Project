@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{CS101 Project2 Q1}
+\author{Jitender Jangra}
+\date{April 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+In Q1 we need to choose the top leader by running a random walk on the graph with teleportation.
+Taking inspiration from the PageRank method, we run a random walk on the graph. For this we choose a node from the graph uniformly at random and drop a gold coin. Then we see the nodes to which it is connected (by outgoing edges), again we choose one out of those uniformly at random and go there and drop a gold coin at this new node. This way we repeat this process for say 1 million times to average out the answer though it is not necessary that this will always yield the correct answer i.e. we might have to increase the iterations.
+As we keep on increasing the iterations we see our answer converging and we declare the node with most gold coins as the top leader.
+An edge case can be when the node (at some point in the random walk) does not have any outgoing edges so in such case we select a new node uniformly at random from all the nodes and again continue with our random walk algo. This is known as Teleportation which is also mentioned in the question. 
+\end{document}

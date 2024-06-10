@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}  % Required for bmatrix environment
+
+\title{CS101 Project2 Q2}
+\author{Jitender Jangra}
+\date{April 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Solution}
+In the second question we have obtained the adjacency matrix from the Q1. Now there are various pairs (i,j) where these is no edge from i to j and j to i. So in such cases we are supposed to predict the existence of the edge using the method explained in the class.\newline
+For this we start with the adjacency list obtained in Q1. 
+\[
+\begin{bmatrix}
+a_{11} & a_{12} & a_{13} & \dots & a_{1n} \\
+a_{21} & a_{22} & a_{23} & \dots & a_{2n} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+a_{n1} & a_{n2} & a_{n3} & \dots & a_{nn} \\
+\end{bmatrix}
+\]
+\newline Now lets say (i,j) is the pair where no in and fro edge exist so we want to predict the missing link for this pair (i is the row index and j is the column index). For this, we remove the ith row and jth column from the matrix and we treat these two removed lines as matrix as well. Then we also remove the $a_{i,j}$ element from both these row and column matrices. So the new matrices are \newline
+\[
+A =
+\begin{bmatrix}
+a_{11} & \dots & a_{1(j-1)} & a_{1(j+1)}& \dots & a_{1n} \\
+a_{21} & \dots & a_{2(j-1)} & a_{2(j+1)}& \dots & a_{2n} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+a_{(i-1)1} & \dots & a_{(i-1)(j-1)} & a_{(i-1)(j+1)}& \dots & a_{(i-1)n} \\
+a_{(i+1)1} & \dots & a_{(i+1)(j-1)} & a_{(i+1)(j+1)}& \dots & a_{(i+1)n} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+a_{n1} & \dots & a_{n(j-1)} & a_{n(j+1)}& \dots & a_{nn} \\
+\end{bmatrix}
+\]
+and the column matrix becomes 
+\[
+B=
+\begin{bmatrix}
+a_{1j} \\
+a_{2j} \\
+\vdots \\
+a_{(i-1)j} \\
+a_{(i+1)j}  \\
+\vdots \\
+a_{nj} \\
+\end{bmatrix}
+\]
+and the row matrix becomes\newline
+\[
+row =
+\begin{bmatrix}
+a_{i1} & a_{i2} & \dots & a_{i(j-1)} & a_{i(j+1)}& \dots & a_{in} \\
+\end{bmatrix}
+\]
+\newline
+Now, it was discussed in the class that we can represent this new column B as linear combination of columns of this new matrix A. So we will solve for Ax = B using the least square method. Here x will be a column matrix represented by 
+\[
+x=
+\begin{bmatrix}
+x_{1} \\
+x_{2} \\
+\vdots \\
+\vdots \\
+x_{n} \\
+\end{bmatrix}
+\]
+So we are able to represent B as linear combination of column vectors of A where $x_{i}$'s are the scalars.
+Now, as we told that we can represent a column vector as linear combination of the column vectors of the matrix A , so this holds true for a single row as well. Thus our prediction for the missing link would be \newline $a_{ij}$ = row*x \newline( both row and x are matrix defined above and we are taking dot product).
+Now if this yeilds a value greater than 0 then we predict that link exist between i to j ie i$->$j and along with this we remove jth row and ith column and follow same procedure to guess the link from j to i i.e. j$->$i. (This way we do separately for (i,j) and (j,i) which is what I have done in code as well. Though, this is to be done in one iteration only as if we update after one of these operation then the condition of no to and fro link is not satisfied)
+\end{document}
